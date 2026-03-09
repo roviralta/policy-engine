@@ -3,8 +3,11 @@ package com.rovi.policy_engine.controller;
 import com.rovi.policy_engine.dto.request.PolicyRequest;
 import com.rovi.policy_engine.dto.response.PolicyResponse;
 import com.rovi.policy_engine.model.Feature;
+import com.rovi.policy_engine.model.PolicyDecision;
 import com.rovi.policy_engine.model.User;
 import com.rovi.policy_engine.service.PolicyEngineService;
+
+import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
@@ -20,12 +23,12 @@ public class PolicyController {
     }
 
     @PostMapping("/check")
-    public ResponseEntity<PolicyResponse> checkPolicy(@RequestBody PolicyRequest request) {
+    public ResponseEntity<PolicyResponse> checkPolicy(@Valid @RequestBody PolicyRequest request) {
         // Convert request DTO → domain objects
         User user = new User(request.getUserId(), request.getPlan(), request.getRegion());
-        Feature feature = new Feature(request.getFeatureName(), request.getPlan(), true); // for demo, enabled=true
+        Feature feature = new Feature(request.getFeatureName(), request.getPlan(), true); 
 
-        var decision = engineService.evaluate(user, feature);
+        PolicyDecision decision = engineService.evaluate(user, feature);
 
         // Convert domain PolicyDecision → response DTO
         PolicyResponse response = PolicyResponse.builder()
