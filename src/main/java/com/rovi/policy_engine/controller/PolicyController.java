@@ -10,6 +10,9 @@ import com.rovi.policy_engine.service.PolicyEngineService;
 import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 
 @RestController
@@ -26,7 +29,7 @@ public class PolicyController {
     public ResponseEntity<PolicyResponse> checkPolicy(@Valid @RequestBody PolicyRequest request) {
         // Convert request DTO → domain objects
         User user = new User(request.getUserId(), request.getPlan(), request.getRegion());
-        Feature feature = new Feature(request.getFeatureName(), request.getPlan(), true); 
+        Feature feature = new Feature(request.getFeatureName(), request.getPlan(), true, List.of(request.getRegion())); 
 
         PolicyDecision decision = engineService.evaluate(user, feature);
 

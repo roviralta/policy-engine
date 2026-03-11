@@ -31,7 +31,12 @@ public class PolicyEngineService {
 
             if (!decision.isAllowed()) {
                 allowed = false;
-            }
+                explanations.addAll(decision.getExplanation());
+                nextSteps.clear(); // reset previous suggestions
+                nextSteps.addAll(decision.getNextSteps());
+            } else {
+                explanations.addAll(decision.getExplanation());
+}
         }
 
         return PolicyDecision.builder()

@@ -6,6 +6,7 @@ import com.rovi.policy_engine.model.PlanType;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Repository
@@ -16,17 +17,34 @@ public class InMemoryFeatureRepository implements FeatureRepository {
     public InMemoryFeatureRepository() {
         // Preload features
         features.put(
-            FeatureName.BASIC_DASHBOARD,
-            new Feature(FeatureName.BASIC_DASHBOARD, PlanType.FREE, true)
-        );
-        features.put(
-            FeatureName.ADVANCED_EXPORT,
-            new Feature(FeatureName.ADVANCED_EXPORT, PlanType.PRO, true)
-        );
-        features.put(
-            FeatureName.PRIORITY_SUPPORT,
-            new Feature(FeatureName.PRIORITY_SUPPORT, PlanType.PRO, false)
-        );
+    FeatureName.BASIC_DASHBOARD,
+    new Feature(
+        FeatureName.BASIC_DASHBOARD,
+        PlanType.FREE,
+        true,
+        List.of("EU", "US", "ASIA")
+    )
+);
+
+features.put(
+    FeatureName.ADVANCED_EXPORT,
+    new Feature(
+        FeatureName.ADVANCED_EXPORT,
+        PlanType.PRO,
+        true,
+        List.of("EU", "US")
+    )
+);
+
+features.put(
+    FeatureName.PRIORITY_SUPPORT,
+    new Feature(
+        FeatureName.PRIORITY_SUPPORT,
+        PlanType.PRO,
+        false,
+        List.of("US")
+    )
+);
     }
 
     @Override
