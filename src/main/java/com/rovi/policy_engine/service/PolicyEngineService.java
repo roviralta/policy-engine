@@ -26,17 +26,19 @@ public class PolicyEngineService {
         for (AccessPolicy policy : policies) {
             PolicyDecision decision = policy.evaluate(user, feature);
 
-            explanations.addAll(decision.getExplanation());
-            nextSteps.addAll(decision.getNextSteps());
+            if (decision.getExplanation() != null) {
+                explanations.addAll(decision.getExplanation());
+            }
 
             if (!decision.isAllowed()) {
                 allowed = false;
-                explanations.addAll(decision.getExplanation());
-                nextSteps.clear(); // reset previous suggestions
+                nextSteps.clear();
+                if (decision.getNextSteps() != null) {
+                    nextSteps.addAll(decision.getNextSteps());
+                }
+            } else if (decision.getNextSteps() != null) {
                 nextSteps.addAll(decision.getNextSteps());
-            } else {
-                explanations.addAll(decision.getExplanation());
-}
+            }
         }
 
         return PolicyDecision.builder()

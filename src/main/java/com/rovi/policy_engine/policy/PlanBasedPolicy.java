@@ -3,7 +3,6 @@ package com.rovi.policy_engine.policy;
 import com.rovi.policy_engine.model.Feature;
 import com.rovi.policy_engine.model.PolicyDecision;
 import com.rovi.policy_engine.model.User;
-import com.rovi.policy_engine.repository.FeatureRepository;
 
 import java.util.List;
 
@@ -14,17 +13,9 @@ import org.springframework.stereotype.Component;
 @Order(2)
 public class PlanBasedPolicy implements AccessPolicy {
 
-    private final FeatureRepository featureRepo;
-
-    public PlanBasedPolicy(FeatureRepository featureRepo) {
-        this.featureRepo = featureRepo;
-    }
-
     @Override
     public PolicyDecision evaluate(User user, Feature feature) {
-        Feature dbFeature = featureRepo.findByName(feature.getName());
-
-        boolean allowed = user.getPlan().canAccess(dbFeature.getRequiredPlan());
+        boolean allowed = user.getPlan().canAccess(feature.getRequiredPlan());
 
         return PolicyDecision.builder()
                 .allowed(allowed)
