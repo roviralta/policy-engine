@@ -1,0 +1,23 @@
+meta {
+  name: Toggle Rule
+  type: http
+  seq: 7
+}
+
+patch {
+  url: {{baseUrl}}/api/rules/:ruleId/toggle
+  auth: bearer
+}
+
+params {
+  ruleId: rule-1
+}
+
+docs {
+  # Toggle Rule
+  
+  Toggle rule enabled/disabled status.
+  
+  ## Path Parameters
+  - `ruleId`: The rule's unique identifier
+}

@@ -1,0 +1,69 @@
+meta {
+  name: Create Rule
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{baseUrl}}/api/rules
+  body: json
+  auth: bearer
+}
+
+body:json {
+  {
+    "name": "Age Restricted Feature",
+    "description": "Users must be 18+ to access",
+    "conditions": [
+      {
+        "field": "user.age",
+        "operator": "GTE",
+        "value": 18
+      }
+    ],
+    "logicalOperator": "AND",
+    "action": "ALLOW",
+    "priority": 5,
+    "enabled": true,
+    "validFrom": "2026-01-01T00:00:00Z",
+    "validTo": null
+  }
+}
+
+docs {
+  # Create Rule
+  
+  Create a new decision rule.
+  
+  ## Request Body
+  - `name`: Rule name (required)
+  - `description`: Rule description
+  - `conditions`: Array of conditions to evaluate
+  - `logicalOperator`: AND or OR
+  - `action`: ALLOW, DENY, or CONDITIONAL
+  - `priority`: Rule priority (lower = higher priority)
+  - `enabled`: Whether rule is active
+  - `validFrom`: Start date for rule validity
+  - `validTo`: End date for rule validity
+  
+  ## Operators
+  - `EQ`: Equals
+  - `NEQ`: Not equals
+  - `GT`: Greater than
+  - `GTE`: Greater than or equal
+  - `LT`: Less than
+  - `LTE`: Less than or equal
+  - `IN`: In list
+  - `NOT_IN`: Not in list
+  - `BETWEEN`: Between range (use secondValue)
+  - `CONTAINS`: Contains substring
+  - `NOT_CONTAINS`: Does not contain
+  - `STARTS_WITH`: Starts with
+  - `ENDS_WITH`: Ends with
+  
+  ## Field Names
+  - `user.id`, `user.plan`, `user.region`, `user.country`
+  - `user.email`, `user.verified`, `user.age`, `user.roles`
+  - `feature.name`, `feature.requiredPlan`, `feature.enabled`
+  - Custom fields from context
+}

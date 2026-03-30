@@ -1,0 +1,41 @@
+meta {
+  name: Register User
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/api/auth/register
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "username": "testuser",
+    "password": "Password123!"
+  }
+}
+
+script:post-response {
+  const body = res.getBody();
+  if (body && body.token) {
+    bru.setVar('token', body.token);
+    console.log('Token saved:', body.token.substring(0, 20) + '...');
+  }
+}
+
+docs {
+  # Register User
+  
+  Register a new user account and receive a JWT token.
+  
+  ## Request Body
+  - `username`: User's username (required)
+  - `password`: User's password (required)
+  
+  ## Response
+  - `token`: JWT token for authentication
+  - `type`: Token type (Bearer)
+  - `expiresIn`: Token expiration time in milliseconds
+}

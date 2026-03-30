@@ -1,0 +1,37 @@
+meta {
+  name: Check Policy
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/api/policy/check
+  body: json
+  auth: bearer
+}
+
+body:json {
+  {
+    "userId": 1,
+    "plan": "PRO",
+    "region": "EU",
+    "featureName": "ADVANCED_EXPORT"
+  }
+}
+
+docs {
+  # Check Policy
+  
+  Evaluate a single feature access policy.
+  
+  ## Request Body
+  - `userId`: User's ID
+  - `plan`: User's subscription plan (FREE, PRO, ENTERPRISE)
+  - `region`: User's region (EU, US, ASIA)
+  - `featureName`: Feature to check (BASIC_DASHBOARD, ADVANCED_EXPORT, PRIORITY_SUPPORT)
+  
+  ## Response
+  - `allowed`: Whether access is granted
+  - `explanation`: List of policy explanations
+  - `nextSteps`: Suggested next steps
+}

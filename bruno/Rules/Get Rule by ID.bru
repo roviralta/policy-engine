@@ -1,0 +1,23 @@
+meta {
+  name: Get Rule by ID
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/api/rules/:ruleId
+  auth: bearer
+}
+
+params {
+  ruleId: rule-1
+}
+
+docs {
+  # Get Rule by ID
+  
+  Get a specific rule by its ID.
+  
+  ## Path Parameters
+  - `ruleId`: The rule's unique identifier
+}

@@ -1,0 +1,402 @@
+{
+  "version": "1.0.0",
+  "name": "Policy Engine API",
+  "description": "Rule-Based Decision System API",
+  "ariables": [
+    {
+      "name": "baseUrl",
+      "value": "http://localhost:8080",
+      "type": "text"
+    },
+    {
+      "name": "token",
+      "value": "",
+      "type": "text"
+    }
+  ],
+  "brunoConfig": {
+    "indent": 2,
+    "newline": "lf",
+    "requestType": "http"
+  },
+  "requests": [
+    {
+      "method": "POST",
+      "url": "{{baseUrl}}/api/auth/register",
+      "name": "Register User",
+      "description": "Register a new user",
+      "body": {
+        "type": "json",
+        "content": {
+          "username": "testuser",
+          "password": "Password123!"
+        }
+      },
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "script": {
+        "afterResponse": "const body = res.getBody();\nif (body && body.token) {\n  bru.setVar('token', body.token);\n}"
+      }
+    },
+    {
+      "method": "POST",
+      "url": "{{baseUrl}}/api/auth/login",
+      "name": "Login",
+      "description": "Login and get JWT token",
+      "body": {
+        "type": "json",
+        "content": {
+          "username": "testuser",
+          "password": "Password123!"
+        }
+      },
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "script": {
+        "afterResponse": "const body = res.getBody();\nif (body && body.token) {\n  bru.setVar('token', body.token);\n}"
+      }
+    },
+    {
+      "method": "POST",
+      "url": "{{baseUrl}}/api/policy/check",
+      "name": "Check Policy",
+      "description": "Check single feature access policy",
+      "body": {
+        "type": "json",
+        "content": {
+          "userId": 1,
+          "plan": "PRO",
+          "region": "EU",
+          "featureName": "ADVANCED_EXPORT"
+        }
+      },
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {{token}}"
+        }
+      ]
+    },
+    {
+      "method": "POST",
+      "url": "{{baseUrl}}/api/policy/simulate",
+      "name": "Simulate Policy (What-If)",
+      "description": "What-if analysis with detailed rule evaluation",
+      "body": {
+        "type": "json",
+        "content": {
+          "user": {
+            "id": 1,
+            "username": "johndoe",
+            "plan": "PRO",
+            "region": "EU",
+            "email": "john@example.com",
+            "country": "Germany",
+            "verified": true,
+            "age": 30,
+            "roles": ["USER"],
+            "customAttributes": {}
+          },
+          "featureName": "ADVANCED_EXPORT",
+          "context": {
+            "timeOfDay": "business",
+            "deviceType": "desktop"
+          }
+        }
+      },
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {{token}}"
+        }
+      ]
+    },
+    {
+      "method": "POST",
+      "url": "{{baseUrl}}/api/policy/batch",
+      "name": "Batch Policy Evaluation",
+      "description": "Evaluate multiple features at once",
+      "body": {
+        "type": "json",
+        "content": {
+          "user": {
+            "id": 1,
+            "username": "johndoe",
+            "plan": "PRO",
+            "region": "EU"
+          },
+          "features": [
+            "BASIC_DASHBOARD",
+            "ADVANCED_EXPORT",
+            "PRIORITY_SUPPORT"
+          ],
+          "context": {}
+        }
+      },
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {{token}}"
+        }
+      ]
+    },
+    {
+      "method": "GET",
+      "url": "{{baseUrl}}/api/rules",
+      "name": "Get All Rules",
+      "description": "List all rules including disabled ones",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{token}}"
+        }
+      ]
+    },
+    {
+      "method": "GET",
+      "url": "{{baseUrl}}/api/rules/active",
+      "name": "Get Active Rules",
+      "description": "List only enabled and valid rules",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{token}}"
+        }
+      ]
+    },
+    {
+      "method": "GET",
+      "url": "{{baseUrl}}/api/rules/{{ruleId}}",
+      "name": "Get Rule by ID",
+      "description": "Get a specific rule by ID",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{token}}"
+        }
+      ]
+    },
+    {
+      "method": "POST",
+      "url": "{{baseUrl}}/api/rules",
+      "name": "Create Rule",
+      "description": "Create a new rule",
+      "body": {
+        "type": "json",
+        "content": {
+          "name": "Age Restricted Feature",
+          "description": "Users must be 18+ to access",
+          "conditions": [
+            {
+              "field": "user.age",
+              "operator": "GTE",
+              "value": 18
+            }
+          ],
+          "logicalOperator": "AND",
+          "action": "ALLOW",
+          "priority": 5,
+          "enabled": true,
+          "validFrom": "2026-01-01T00:00:00Z",
+          "validTo": null
+        }
+      },
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {{token}}"
+        }
+      ]
+    },
+    {
+      "method": "PUT",
+      "url": "{{baseUrl}}/api/rules/{{ruleId}}",
+      "name": "Update Rule",
+      "description": "Update an existing rule",
+      "body": {
+        "type": "json",
+        "content": {
+          "name": "Updated Rule Name",
+          "description": "Updated description",
+          "conditions": [
+            {
+              "field": "user.plan",
+              "operator": "IN",
+              "value": ["PRO", "ENTERPRISE", "PREMIUM"]
+            }
+          ],
+          "logicalOperator": "OR",
+          "action": "ALLOW",
+          "priority": 2,
+          "enabled": true
+        }
+      },
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {{token}}"
+        }
+      ]
+    },
+    {
+      "method": "DELETE",
+      "url": "{{baseUrl}}/api/rules/{{ruleId}}",
+      "name": "Delete Rule",
+      "description": "Delete a rule",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{token}}"
+        }
+      ]
+    },
+    {
+      "method": "PATCH",
+      "url": "{{baseUrl}}/api/rules/{{ruleId}}/toggle",
+      "name": "Toggle Rule",
+      "description": "Toggle rule enabled/disabled status",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{token}}"
+        }
+      ]
+    },
+    {
+      "method": "GET",
+      "url": "{{baseUrl}}/api/decisions",
+      "name": "Get All Audits",
+      "description": "List all decision audits (paginated)",
+      "params": [
+        {
+          "name": "page",
+          "value": "0"
+        },
+        {
+          "name": "size",
+          "value": "20"
+        }
+      ],
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{token}}"
+        }
+      ]
+    },
+    {
+      "method": "GET",
+      "url": "{{baseUrl}}/api/decisions/user/{{userId}}",
+      "name": "Get Audits by User",
+      "description": "Get audits by user ID",
+      "params": [
+        {
+          "name": "page",
+          "value": "0"
+        },
+        {
+          "name": "size",
+          "value": "20"
+        }
+      ],
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{token}}"
+        }
+      ]
+    },
+    {
+      "method": "GET",
+      "url": "{{baseUrl}}/api/decisions/feature/{{featureName}}",
+      "name": "Get Audits by Feature",
+      "description": "Get audits by feature name",
+      "params": [
+        {
+          "name": "page",
+          "value": "0"
+        },
+        {
+          "name": "size",
+          "value": "20"
+        }
+      ],
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{token}}"
+        }
+      ]
+    },
+    {
+      "method": "GET",
+      "url": "{{baseUrl}}/api/decisions/range",
+      "name": "Get Audits by Date Range",
+      "description": "Get audits by date range",
+      "params": [
+        {
+          "name": "from",
+          "value": "2026-03-01T00:00:00Z"
+        },
+        {
+          "name": "to",
+          "value": "2026-03-30T23:59:59Z"
+        },
+        {
+          "name": "page",
+          "value": "0"
+        },
+        {
+          "name": "size",
+          "value": "20"
+        }
+      ],
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{token}}"
+        }
+      ]
+    },
+    {
+      "method": "GET",
+      "url": "{{baseUrl}}/api/decisions/stats",
+      "name": "Get Decision Statistics",
+      "description": "Get decision statistics",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{token}}"
+        }
+      ]
+    }
+  ]
+}

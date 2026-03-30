@@ -1,0 +1,25 @@
+meta {
+  name: Get All Audits
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/decisions
+  auth: bearer
+}
+
+query {
+  page: 0
+  size: 20
+}
+
+docs {
+  # Get All Audits
+  
+  List all decision audits with pagination.
+  
+  ## Query Parameters
+  - `page`: Page number (0-indexed)
+  - `size`: Page size (default: 20)
+}

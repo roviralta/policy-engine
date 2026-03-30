@@ -1,0 +1,19 @@
+meta {
+  name: Get All Rules
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/rules
+  auth: bearer
+}
+
+docs {
+  # Get All Rules
+  
+  List all rules including disabled ones.
+  
+  ## Response
+  Array of all rules sorted by priority.
+}

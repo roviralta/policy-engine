@@ -1,0 +1,26 @@
+meta {
+  name: Delete Rule
+  type: http
+  seq: 6
+}
+
+delete {
+  url: {{baseUrl}}/api/rules/:ruleId
+  auth: bearer
+}
+
+params {
+  ruleId: rule-1
+}
+
+docs {
+  # Delete Rule
+  
+  Delete a rule by ID.
+  
+  ## Path Parameters
+  - `ruleId`: The rule's unique identifier
+  
+  ## Response
+  204 No Content on success
+}

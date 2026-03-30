@@ -1,0 +1,44 @@
+meta {
+  name: Batch Policy Evaluation
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/api/policy/batch
+  body: json
+  auth: bearer
+}
+
+body:json {
+  {
+    "user": {
+      "id": 1,
+      "username": "johndoe",
+      "plan": "PRO",
+      "region": "EU"
+    },
+    "features": [
+      "BASIC_DASHBOARD",
+      "ADVANCED_EXPORT",
+      "PRIORITY_SUPPORT"
+    ],
+    "context": {}
+  }
+}
+
+docs {
+  # Batch Policy Evaluation
+  
+  Evaluate multiple features at once.
+  
+  ## Request Body
+  - `user`: User information
+  - `features`: Array of feature names to evaluate
+  - `context`: Additional context data
+  
+  ## Response
+  - `results`: Array of feature decisions
+  - `evaluatedAt`: Timestamp of evaluation
+  - `totalLatencyMs`: Total evaluation latency
+}

@@ -1,0 +1,42 @@
+meta {
+  name: Update Rule
+  type: http
+  seq: 5
+}
+
+put {
+  url: {{baseUrl}}/api/rules/:ruleId
+  body: json
+  auth: bearer
+}
+
+params {
+  ruleId: rule-1
+}
+
+body:json {
+  {
+    "name": "Updated Rule Name",
+    "description": "Updated description",
+    "conditions": [
+      {
+        "field": "user.plan",
+        "operator": "IN",
+        "value": ["PRO", "ENTERPRISE", "PREMIUM"]
+      }
+    ],
+    "logicalOperator": "OR",
+    "action": "ALLOW",
+    "priority": 2,
+    "enabled": true
+  }
+}
+
+docs {
+  # Update Rule
+  
+  Update an existing rule by ID.
+  
+  ## Path Parameters
+  - `ruleId`: The rule's unique identifier
+}

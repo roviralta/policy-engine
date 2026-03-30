@@ -1,0 +1,62 @@
+meta {
+  name: Simulate Policy
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/api/policy/simulate
+  body: json
+  auth: bearer
+}
+
+body:json {
+  {
+    "user": {
+      "id": 1,
+      "username": "johndoe",
+      "plan": "PRO",
+      "region": "EU",
+      "email": "john@example.com",
+      "country": "Germany",
+      "verified": true,
+      "age": 30,
+      "roles": ["USER"],
+      "customAttributes": {}
+    },
+    "featureName": "ADVANCED_EXPORT",
+    "context": {
+      "timeOfDay": "business",
+      "deviceType": "desktop"
+    }
+  }
+}
+
+docs {
+  # Simulate Policy (What-If)
+  
+  What-if analysis with detailed rule evaluation.
+  
+  ## Request Body
+  - `user`: Extended user information
+    - `id`: User ID
+    - `username`: Username
+    - `plan`: Plan type
+    - `region`: Region
+    - `email`: Email address
+    - `country`: Country
+    - `verified`: Email verification status
+    - `age`: User age
+    - `roles`: User roles
+    - `customAttributes`: Additional custom attributes
+  - `featureName`: Feature to simulate
+  - `context`: Additional context data
+  
+  ## Response
+  - `allowed`: Whether access would be granted
+  - `reason`: Explanation of the decision
+  - `ruleEvaluations`: Detailed evaluation of each rule
+  - `nextSteps`: Suggested next steps
+  - `evaluatedAt`: Timestamp of evaluation
+  - `latencyMs`: Evaluation latency in milliseconds
+}

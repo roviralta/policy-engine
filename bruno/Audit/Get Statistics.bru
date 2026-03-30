@@ -1,0 +1,21 @@
+meta {
+  name: Get Decision Statistics
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{baseUrl}}/api/decisions/stats
+  auth: bearer
+}
+
+docs {
+  # Get Decision Statistics
+  
+  Get aggregated decision statistics.
+  
+  ## Response
+  - `totalDecisions`: Total number of decisions
+  - `allowedDecisions`: Number of allowed decisions
+  - `deniedDecisions`: Number of denied decisions
+}

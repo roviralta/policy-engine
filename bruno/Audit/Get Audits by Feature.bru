@@ -1,0 +1,32 @@
+meta {
+  name: Get Audits by Feature
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/api/decisions/feature/:featureName
+  auth: bearer
+}
+
+params {
+  featureName: ADVANCED_EXPORT
+}
+
+query {
+  page: 0
+  size: 20
+}
+
+docs {
+  # Get Audits by Feature
+  
+  Get audits filtered by feature name.
+  
+  ## Path Parameters
+  - `featureName`: Feature name (BASIC_DASHBOARD, ADVANCED_EXPORT, PRIORITY_SUPPORT)
+  
+  ## Query Parameters
+  - `page`: Page number
+  - `size`: Page size
+}

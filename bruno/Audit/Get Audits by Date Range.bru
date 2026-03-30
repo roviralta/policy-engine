@@ -1,0 +1,29 @@
+meta {
+  name: Get Audits by Date Range
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUrl}}/api/decisions/range
+  auth: bearer
+}
+
+query {
+  from: 2026-03-01T00:00:00Z
+  to: 2026-03-30T23:59:59Z
+  page: 0
+  size: 20
+}
+
+docs {
+  # Get Audits by Date Range
+  
+  Get audits within a specific date range.
+  
+  ## Query Parameters
+  - `from`: Start timestamp (ISO 8601)
+  - `to`: End timestamp (ISO 8601)
+  - `page`: Page number
+  - `size`: Page size
+}

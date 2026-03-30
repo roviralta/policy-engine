@@ -1,0 +1,16 @@
+meta {
+  name: Get Active Rules
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/api/rules/active
+  auth: bearer
+}
+
+docs {
+  # Get Active Rules
+  
+  List only enabled and valid rules (within date range).
+}
