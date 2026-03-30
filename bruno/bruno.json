@@ -2,16 +2,20 @@
   "version": "1.0.0",
   "name": "Policy Engine API",
   "description": "Rule-Based Decision System API",
+  "type": "collection",
+  "scripts": {},
   "variables": [
     {
       "name": "baseUrl",
       "value": "http://localhost:8080",
-      "type": "text"
+      "type": "text",
+      "enabled": true
     },
     {
       "name": "token",
       "value": "",
-      "type": "text"
+      "type": "text",
+      "enabled": true
     }
   ]
 }
